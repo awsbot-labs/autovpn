@@ -7,39 +7,53 @@ Script that allows the easy creation of OpenVPN endpoints in any AWS region.  To
 Use Case
   * Create on demand OpenVPN Endpoints in AWS that can easily be destroyed after done
     only pay for what you use.
-    
-Dependencies:
 
-1. Install boto by running: 
-	<pre><addr>pip install boto</pre></addr>
-2. Install paramiko by running: 
-	<pre><addr>pip install paramiko</pre></addr>
+## Dependencies
+
+1. Create a virtualenv:
+```
+mkvirtualenv -p python3 env/
+source env/bin/activate
+````
+
+2. Install dependencies by running `pip install -r requirements.txt`
+
 3. Ensure that you have an AWS .credentials file by running: 
-	<pre><addr>vi ~/.aws/credentials</pre></addr>
-	Then type in the following and add your keys (remove parenthesis):
-	<pre><code>
-	[default]
-	aws_access_key_id = (your_access_key_here)
-	aws_secret_access_key = (your_secret_key_here)
-	</pre></code>
+```
+vi ~/.aws/credentials
+```
+Then type in the following and add your keys (remove parenthesis):
+```
+[default]
+aws_access_key_id = (your_access_key_here)
+aws_secret_access_key = (your_secret_key_here)
+```
 4. Install OpenVPN client (if needed)
 
-
-Installation:
+## Installation
 
 1. Ensure dependencies are all installed.
 2. Clone repo to system.
-  <pre><code>git clone https://github.com/ttlequals0/autovpn.git</code></pre>
+```
+git clone https://github.com/ttlequals0/autovpn.git
+```
 3. To create SSH keypair execute autovpn with -G and -r options for AWS region of choice. (optional)	
    NOTE: Make sure to add new key to your ssh-agent.
-	<pre><addr>./autovpn -G -r us-east-1</addr></pre>
+```
+./autovpn -G -r us-east-1
+```
 4. Execute autovpn with -C -k and -r options to deploy to AWS:
-	<pre><addr>./autovpn -C -r us-east-1 -k us-east-1_vpnkey</addr></pre>
+```
+./autovpn -C -r us-east-1 -k us-east-1_vpnkey
+```
 4. OpenVPN config files are downloaded to current working directory.
 5. Import the OpenVPN config file and connect:
-	<pre><addr>sudo openvpn us-east-1_aws_vpn.ovpn</pre></addr></pre>  
+```
+sudo openvpn us-east-1_aws_vpn.ovpn
+```
 
-<pre><code>
+## Man page
+```
 DESCRIPTION:
     autovpn - On Demand AWS OpenVPN Endpoint Deployment Tool.
 	Project found at https://github.com/ttlequals0/autovpn
@@ -50,7 +64,6 @@ USAGE:
        -G    Generate new keypair.
        -S    Get all running instances in a given region.
        -T    Terminate a OpenVPN endpoint.
-       -a    Specify custom ami.*
        -d    Specify custom DNS server. (ex. 4.2.2.1)
        -h    Displays this message.
        -i    AWS Instance type (Optional, Default is t2.micro)
@@ -58,9 +71,10 @@ USAGE:
        -k    Specify the name of AWS keypair (Required)
        -m    Allow multiple connections to same endpoint.
        -r    Specify AWS Region (Required)
-	     us-east-1 us-west-1 us-east-2 us-west-2 eu-west-1 eu-west-2 
-	     eu-central-1 ap-southeast-1 ap-northeast-1 ap-northeast-2 
-	     ap-southeast-2 sa-east-1 ca-central-1
+	     us-east-1 us-west-1 us-east-2 us-west-2 eu-west-1 eu-west-2
+	     eu-west-3 eu-central-1 eu-north-1 ap-southeast-1 ap-northeast-1
+	     ap-northeast-2 ap-northeast-3 ap-southeast-2 sa-east-1
+       ap-east-1 ca-central-1 me-south-1
        -p    Specify custom OpenVPN UDP port
        -u    Specify custom ssh user.***
        -y    Skip confirmations
@@ -81,10 +95,9 @@ NOTES:
         ** - Any instance size can be given but the t2.micro is more than enough.
         *** - Custom user might be need if using a custom ami.
 	**** - AWS IAM user must have EC2 or Administrator permissions set.
+```
 
-</pre></code>
-
-ToDo:
+## To Do
   * Continue to update documentation
   * Add deletion of Securoty Group if it is no longer in use.
   * Add ability to create more client configs for one endpoint.
